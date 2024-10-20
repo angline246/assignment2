@@ -2,7 +2,7 @@
 
 $dataFile = 'users.json';
 
-// Handle form submission (add/update)
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $place = htmlspecialchars($_POST['place']);
     $userIndex = isset($_POST['user_index']) ? (int)$_POST['user_index'] : -1;
 
-    // Load existing users data
+    
     if (file_exists($dataFile)) {
         $jsonData = file_get_contents($dataFile);
         $users = json_decode($jsonData, true);
@@ -25,24 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $users[$userIndex]['age'] = $age;
         $users[$userIndex]['place'] = $place;
     } else {
-        // Add new user
+        
         $users[] = ['name' => $name, 'email' => $email, 'age' => $age, 'place' => $place];
     }
 
-    // Save updated users list
+    
     file_put_contents($dataFile, json_encode($users));
 }
 
-// Handle delete request
+
 if (isset($_GET['delete'])) {
     $userIndex = (int)$_GET['delete'];
 
-    // Load existing users data
+    
     if (file_exists($dataFile)) {
         $jsonData = file_get_contents($dataFile);
         $users = json_decode($jsonData, true);
 
-        // Remove user
+        
         if (isset($users[$userIndex])) {
             unset($users[$userIndex]);
             $users = array_values($users); // Reindex array after deletion
@@ -51,7 +51,7 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch users for display
+
 $usersData = '';
 if (file_exists($dataFile)) {
     $jsonData = file_get_contents($dataFile);
@@ -69,7 +69,7 @@ if (file_exists($dataFile)) {
     $usersData .= "</div>";
 }
 
-// Check if editing
+
 $editName = '';
 $editEmail = '';
 $editAge = '';
@@ -78,7 +78,7 @@ $editIndex = -1;
 if (isset($_GET['edit'])) {
     $editIndex = (int)$_GET['edit'];
 
-    // Load the user to edit
+  
     if (file_exists($dataFile)) {
         $jsonData = file_get_contents($dataFile);
         $users = json_decode($jsonData, true);
